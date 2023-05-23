@@ -53,7 +53,9 @@ export default class Juego extends Phaser.Scene {
 
     spawnPoint = map.findObject("objetos", (obj) => obj.name === "salida");
     console.log("spawn point salida ", spawnPoint);
-    this.salida = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "");
+    this.salida = this.physics.add
+      .sprite(spawnPoint.x, spawnPoint.y, "salida")
+      .setScale(0.2);
 
     //  Input Events
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -86,21 +88,21 @@ export default class Juego extends Phaser.Scene {
       null,
       this
     );
-
+    this.physics.add.collider(this.salida, plataformaLayer);
     this.physics.add.overlap(
       this.jugador,
       this.salida,
       this.esVencedor,
-      null,
+      () => this.cantidadEstrellas >= 1, // condicion de ejecucion
       this
     );
 
     /// mostrar cantidadEstrella en pantalla
     this.cantidadEstrellasTexto = this.add.text(
-      20,
-      20,
+      15,
+      15,
       "Estrellas recolectadas: 0",
-      { fontSize: "32px", fill: "#FFFFFF" }
+      { fontSize: "15px", fill: "#FFFFFF" }
     );
   }
 
@@ -142,6 +144,15 @@ export default class Juego extends Phaser.Scene {
   }
 
   esVencedor(jugador, salida) {
+    // if (this.cantidadEstrellas >= 5)
+    // sacamos la condicion porque esta puesta como 4to parametro en el overlap
+
     console.log("estrellas recolectadas", this.cantidadEstrellas);
+
+    this.scene.start("fin", {
+      cantidadEstrellas: this.cantidadEstrellas,
+      y: "este es un dato de muestra",
+      z: "este es otro atributo enviado a otro escena",
+    });
   }
 }

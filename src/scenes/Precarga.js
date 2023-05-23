@@ -18,6 +18,8 @@ export default class Precarga extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 48,
     });
+
+    this.load.image("salida", "./public/images/salida.png");
   }
 
   create() {
