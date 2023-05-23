@@ -12,6 +12,9 @@ export default class Juego extends Phaser.Scene {
     // init variables
     // take data passed from other scenes
     // data object param {}
+
+    this.cantidadEstrellas = 0;
+    console.log("Prueba !");
   }
 
   create() {
@@ -35,14 +38,11 @@ export default class Juego extends Phaser.Scene {
 
     plataformaLayer.setCollisionByProperty({ colision: true });
 
-    console.log(objectosLayer);
+    console.log("spawn point player", objectosLayer);
 
     // crear el jugador
     // Find in the Object Layer, the name "dude" and get position
-    const spawnPoint = map.findObject(
-      "objetos",
-      (obj) => obj.name === "jugador"
-    );
+    let spawnPoint = map.findObject("objetos", (obj) => obj.name === "jugador");
     console.log(spawnPoint);
     // The player and its settings
     this.jugador = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "dude");
@@ -50,6 +50,10 @@ export default class Juego extends Phaser.Scene {
     //  Player physics properties. Give the little guy a slight bounce.
     this.jugador.setBounce(0.1);
     this.jugador.setCollideWorldBounds(true);
+
+    spawnPoint = map.findObject("objetos", (obj) => obj.name === "salida");
+    console.log("spawn point salida ", spawnPoint);
+    this.salida = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "");
 
     //  Input Events
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -78,7 +82,25 @@ export default class Juego extends Phaser.Scene {
     this.physics.add.collider(
       this.jugador,
       this.estrellas,
-      this.recolectarEstrella
+      this.recolectarEstrella,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.jugador,
+      this.salida,
+      this.esVencedor,
+      null,
+      this
+    );
+
+    /// mostrar cantidadEstrella en pantalla
+    this.cantidadEstrellasTexto = this.add.text(
+      20,
+      20,
+      "Estrellas recolectadas: 0",
+      { fontSize: "32px", fill: "#FFFFFF" }
     );
   }
 
@@ -111,8 +133,15 @@ export default class Juego extends Phaser.Scene {
     estrella.disableBody(true, true);
 
     // todo / para hacer: sumar puntaje
+    //this.cantidadEstrellas = this.cantidadEstrellas + 1;
+    this.cantidadEstrellas++;
 
-    // todo / para hacer: controlar si el grupo esta vacio
-    // todo / para hacer: ganar el juego
+    this.cantidadEstrellasTexto.setText(
+      "Estrellas recolectadas: " + this.cantidadEstrellas
+    );
+  }
+
+  esVencedor(jugador, salida) {
+    console.log("estrellas recolectadas", this.cantidadEstrellas);
   }
 }
