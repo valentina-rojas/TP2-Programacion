@@ -1,25 +1,24 @@
 // URL to explain PHASER scene: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scene/
 
-export default class Juego extends Phaser.Scene {
+export default class Nivel2 extends Phaser.Scene {
   constructor() {
     // key of the scene
     // the key will be used to start the scene by other scenes
-    super("juego");
+    super("nivel2");
   }
 
-  init() {
+  init(data) {
     // this is called before the scene is created
     // init variables
     // take data passed from other scenes
     // data object param {}
-
-    this.cantidadEstrellas = 0;
-    console.log("Prueba !");
+    console.log(data);
+    this.cantidadEstrellas = data.cantidadEstrellas;
   }
 
   create() {
     // todo / para hacer: texto de puntaje
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({ key: "map2" });
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -93,15 +92,14 @@ export default class Juego extends Phaser.Scene {
       this.jugador,
       this.salida,
       this.esVencedor,
-      () => this.cantidadEstrellas >= 1, // condicion de ejecucion
+      () => this.cantidadEstrellas >= 10, // condicion de ejecucion
       this
     );
 
-    /// mostrar cantidadEstrella en pantalla
     this.cantidadEstrellasTexto = this.add.text(
       15,
       15,
-      "Estrellas recolectadas: 0",
+      "Estrellas recolectadas: " + this.cantidadEstrellas,
       { fontSize: "15px", fill: "#FFFFFF" }
     );
   }
