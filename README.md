@@ -1,4 +1,4 @@
-# Phaser 3 Template
+# TP Nº2 Programación
 
 Colocar elementos recolectables y un elemento que indique la posición de llegada.
 
