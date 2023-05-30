@@ -1,10 +1,10 @@
 // URL to explain PHASER scene: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scene/
 
-export default class Nivel2 extends Phaser.Scene {
+export default class Nivel3 extends Phaser.Scene {
   constructor() {
     // key of the scene
     // the key will be used to start the scene by other scenes
-    super("nivel2");
+    super("nivel3");
   }
 
   init(data) {
@@ -18,7 +18,7 @@ export default class Nivel2 extends Phaser.Scene {
 
   create() {
     // todo / para hacer: texto de puntaje
-    const map = this.make.tilemap({ key: "map2" });
+    const map = this.make.tilemap({ key: "map3" });
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -92,17 +92,34 @@ export default class Nivel2 extends Phaser.Scene {
       this.jugador,
       this.salida,
       this.esVencedor,
-      () => this.cantidadEstrellas >= 10, // condicion de ejecucion
+      () => this.cantidadEstrellas >= 15, // condicion de ejecucion
       this
     );
 
+    //texto para mostrar cantidad de estrellas
     this.cantidadEstrellasTexto = this.add.text(
       15,
       15,
       "Estrellas recolectadas: " + this.cantidadEstrellas,
       { fontSize: "15px", fill: "#FFFFFF" }
     );
+
+
+
+   // camara que siga al jugador
+    this.cameras.main.startFollow(this.jugador);
+
+    //world bounds
+    this.physics.world.setBounds(0,0, map.widthInPixels, map.heightInPixels);
+
+    //camera dont go out of the map
+    this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
+
+    //fijar texto para que no se mueva con la camara
+   this.cantidadEstrellasTexto.setScrollFactor(0);
   }
+
+  
 
   update() {
     // update game objects
@@ -132,7 +149,7 @@ export default class Nivel2 extends Phaser.Scene {
   recolectarEstrella(jugador, estrella) {
     estrella.disableBody(true, true);
 
-    // todo / para hacer: sumar puntaje
+    
     //this.cantidadEstrellas = this.cantidadEstrellas + 1;
     this.cantidadEstrellas++;
 
@@ -142,12 +159,13 @@ export default class Nivel2 extends Phaser.Scene {
   }
 
   esVencedor(jugador, salida) {
+
     // if (this.cantidadEstrellas >= 5)
     // sacamos la condicion porque esta puesta como 4to parametro en el overlap
 
     console.log("estrellas recolectadas", this.cantidadEstrellas);
 
-    this.scene.start("nivel3", {
+    this.scene.start("fin", {
       cantidadEstrellas: this.cantidadEstrellas,
       y: "este es un dato de muestra",
       z: "este es otro atributo enviado a otro escena",
