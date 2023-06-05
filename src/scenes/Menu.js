@@ -1,52 +1,26 @@
 // URL to explain PHASER scene: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scene/
 
-export default class Fin extends Phaser.Scene {
+export default class Menu extends Phaser.Scene {
   constructor() {
     // key of the scene
     // the key will be used to start the scene by other scenes
-    super("fin");
+    super("menu");
   }
 
-  init(data) {
-    // this is called before the scene is created
-    // init variables
-    // take data passed from other scenes
-    // data object param {}
-    console.log(data);
-    this.cantidadEstrellas = data.cantidadEstrellas;
+  preload() {
+    this.load.image("menuFondo", "./public/images/main_menu_background.png");
+    this.load.image("logoPhaser", "./public/images/phaser_logo.png");
   }
 
   create() {
-
-   
-
-    this.cantidadEstrellasTexto = this.add.text(
-      15,
-      15,
-      "Estrellas recolectadas: " + this.cantidadEstrellas,
-      { fontSize: "15px", fill: "#FFFFFF" }
-    );
-
-    this.add.text(150, 200, "¡TERMINASTE EL JUEGO!", {
-      fontSize: "40px",
-      fill: "#ffffff",
-      fontFamily: "roboto",
-      fontWeight: "bold",
-      shadow: {
-        offsetX: 3,
-        offsetY: 3,
-        color: "#000000",
-        blur: 5,
-        stroke: false,
-        fill: true,
-      },
-    });
+    this.add.image(400, 300, "menuFondo").setScale(1.1);
+    this.add.image(400, 200, "logoPhaser")
 
     const button = this.add
       .text(
         this.game.config.width / 2,
         this.game.config.height / 2 + 50,
-        "REINICIAR",
+        "JUGAR",
         {
           fontFamily: "Arial",
           fontSize: 20,
@@ -70,9 +44,7 @@ export default class Fin extends Phaser.Scene {
     });
 
     button.on("pointerup", () => {
-      this.scene.start("menu");
+      this.scene.start("juego");
     });
   }
-
-  }
-
+}
